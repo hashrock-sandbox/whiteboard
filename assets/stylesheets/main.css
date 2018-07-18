@@ -40,3 +40,13 @@ textarea:focus, input:focus {
   min-width: 3rem;
   text-align: center;
 }
+
+.palette {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+rect {
+  fill: black;
+}

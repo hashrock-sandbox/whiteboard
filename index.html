@@ -19,6 +19,7 @@
       </div>
     </div>
     <div style="position: absolute;">
+      <div :style="{'background': selectedColor}" class="palette" @touchend.prevent></div>
       <div class="ui" touch-action="none" @touchstart="zoom(1.5)" @pointerdown="zoom(1.5)" @touchend.prevent>拡大</div>
       <div class="ui" touch-action="none" @touchstart="zoom(1/1.5)" @pointerdown="zoom(1/1.5)" @touchend.prevent>縮小</div>
       <div class="ui" touch-action="none" @touchstart="move(100, 0)" @pointerdown="move(100, 0)" @touchend.prevent>←</div>
@@ -30,8 +31,24 @@
       <div style="color: #333;">
         {{count}} users
       </div>
+      <div>
+        <div v-for="p in palette" :style="{'background': p}" class="palette" @touchstart="selectColor(p)" @pointerdown="selectColor(p)"
+          @touchend.prevent></div>
+      </div>
     </div>
 
+    <svg v-for="(message, idx) in messagesLast" :key="message._id" viewBox="0 0 300 150" width="150" height="75" touch-action="none"
+      style="position: absolute; right: 0; background: rgba(255,255,255,0.5); border: 1px solid #CCC; border-radius: 4px;"
+      :style="{'bottom': idx * 80 + 150 + 'px'}" @touchend.prevent>
+      <polyline v-for="line in message.text.split('\n')" :points="line" stroke="black" stroke-width="2px" fill="none" />
+    </svg>
+
+    <svg width="300" height="150" touch-action="none" style="position: absolute; right: 0; bottom: 0; border: 1px solid #333; background: white;"
+      @pointerdown="chatDown" @pointermove="chatMove" @pointerup="chatUp" @touchend.prevent>
+      <polyline :points="pointsString" stroke="black" stroke-width="2px" fill="none" />
+      <polyline v-for="line in lines" :points="lineToString(line)" stroke="black" stroke-width="2px" fill="none" />
+    </svg>
+    <button @click="sendChat" style="position: absolute; right: 0; bottom: 0;">Send</button>
   </div>
 
 

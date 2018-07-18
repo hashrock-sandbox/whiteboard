@@ -64,16 +64,6 @@ function draw(stroke) {
   ctx.closePath();
 }
 
-function chooseColor({ id }) {
-  color = id;
-  width = 2;
-}
-
-function erase() {
-  color = "white";
-  width = 14;
-}
-
 var scale = 1;
 var offset = { x: 0, y: 0 };
 
@@ -82,11 +72,39 @@ function translate() {
   document.querySelector("#whiteboard").style = s;
 }
 
+const palette = [
+  "#000000",
+  "#FFFFFF",
+  "#5f5750",
+  "#82759a",
+  "#c0c1c5",
+  "#fff0e7",
+  "#7d2953",
+  "#ff074e",
+  "#ff76a6",
+  "#a95238",
+  "#ffa108",
+  "#feeb2c",
+  "#ffcaa8",
+  "#008551",
+  "#00e339",
+  "#222e53",
+  "#2cabfe"
+];
+
+var chatFlag = false;
+var chatPp = { x: 0, y: 0 };
+
 new Vue({
   el: "#app",
   data() {
     return {
-      count: 0
+      count: 0,
+      palette: palette,
+      selectedColor: color,
+      points: [],
+      lines: [],
+      messages: []
     };
   },
   methods: {
@@ -112,6 +130,30 @@ new Vue({
       scale = 1;
       translate();
     },
+    chatDown(e) {
+      const bound = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - bound.left;
+      const y = e.clientY - bound.top;
+      chatFlag = true;
+      this.points.push([x, y]);
+    },
+    chatMove(e) {
+      if (chatFlag) {
+        const bound = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - bound.left;
+        const y = e.clientY - bound.top;
+        this.points.push([x, y]);
+      }
+    },
+    chatUp(e) {
+      chatFlag = false;
+      this.lines.push(this.points);
+      this.points = [];
+    },
+    lineToString(line) {
+      return line.map(p => p.join(" ")).join(" ");
+    },
+
     onPointerMove(e) {
       if (flag) {
         updateXY(e);
@@ -135,6 +177,31 @@ new Vue({
       ctx = canvas.getContext("2d");
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+    },
+    selectColor(c) {
+      this.selectedColor = c;
+      color = c;
+    },
+    sendChat() {
+      socket.emit("chat", {
+        handle,
+        text: this.lines.map(l => l.join(" ")).join("\n")
+      });
+      this.lines = [];
+    },
+    appendMessage(chat) {
+      this.messages.push(chat);
+    }
+  },
+  computed: {
+    pointsString() {
+      return this.points.map(p => p.join(" ")).join(" ");
+    },
+    messagesLast() {
+      return this.messages
+        .slice()
+        .reverse()
+        .slice(0, 10);
     }
   },
   mounted() {
@@ -145,7 +212,7 @@ new Vue({
         handle = `Client ${id}`;
         // load global state: canvas, chat messages, & user count
         for (const stroke of strokeHistory) draw(stroke);
-        // for (const chat of chatHistory) appendMessage(chat);
+        for (const chat of chatHistory) this.appendMessage(chat);
 
         this.count = userCount;
       }
@@ -160,7 +227,7 @@ new Vue({
     });
 
     socket.on("chat", message => {
-      // appendMessage(message);
+      this.appendMessage(message);
     });
 
     socket.on("count", userCount => {
