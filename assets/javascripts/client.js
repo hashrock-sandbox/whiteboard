@@ -92,6 +92,8 @@ const palette = [
   "#2cabfe"
 ];
 
+const penWidthList = [1, 2, 3, 5, 10, 20, 30, 50];
+
 var chatFlag = false;
 var chatPp = { x: 0, y: 0 };
 
@@ -102,9 +104,11 @@ new Vue({
       count: 0,
       palette: palette,
       selectedColor: color,
+      selectedWidth: width,
       points: [],
       lines: [],
-      messages: []
+      messages: [],
+      penWidthList: penWidthList
     };
   },
   methods: {
@@ -181,6 +185,10 @@ new Vue({
     selectColor(c) {
       this.selectedColor = c;
       color = c;
+    },
+    setPenWidth(w) {
+      this.selectedWidth = w;
+      width = w;
     },
     sendChat() {
       socket.emit("chat", {

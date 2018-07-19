@@ -11,6 +11,7 @@
 #whiteboard {
   background: #fff;
   transform-origin: top left;
+  transition: transform ease 0.1s;
 }
 
 #draw-container {

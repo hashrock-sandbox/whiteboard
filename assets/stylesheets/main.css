@@ -4,7 +4,7 @@ body {
   font-family: Helvetica Neue, Helvetica;
   position: absolute;
   margin: 0%;
-  background: gray;
+  background: rgb(39, 39, 54);
   touch-action: none;
 }
 
@@ -30,23 +30,99 @@ textarea:focus, input:focus {
   display: none !important;
 }
 
+.menu {
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 .ui {
-  background: rgba(0, 0, 0, 0.5);
+  font-size: 0.875rem;
+  background: rgba(0, 0, 0, 0.75);
   color: white;
   display: inline-block;
-  padding: 0.25rem;
+  padding: 0.25rem 0.5rem;
   user-select: none;
   line-height: 2rem;
   min-width: 3rem;
   text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.ui:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.paletteWrapper {
+  padding-left: 0.75rem;
+  margin-left: 0.25rem;
+  border-left: 1px solid #e2e2e2;
+  display: inline-block;
 }
 
 .palette {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   display: inline-block;
+  margin-right: 0.25rem;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.palettes {
+  margin-top: 0.5rem;
+  margin-left: 0.05rem;
+}
+
+.users {
+  margin-top: 0.25rem;
+  color: #555;
+}
+
+.userCount {
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 rect {
   fill: black;
+}
+
+.chat__clear {
+  position: absolute;
+  right: 0;
+  bottom: 1.5rem;
+}
+
+.chat__send {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.penWidthWrapper {
+  margin-top: 0.5rem;
+}
+
+.penWidth {
+  width: 62px;
+  height: 62px;
+  margin-right: 0.5rem;
+  text-align: center;
+  line-height: 62px;
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: 0.7rem;
+  /* margin-right: 0.25rem; */
+  border-radius: 3px;
+  cursor: pointer;
+  /* border: 1px solid #333; */
+  position: relative;
+  background: rgba(0, 0, 0, 0.75);
+  border: 3px solid rgba(0, 0, 0, 0.75);
+}
+
+.penWidth--selected {
+  border-color: #77F;
+  color: #77F;
 }

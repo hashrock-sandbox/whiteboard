@@ -17,8 +17,7 @@
           @touchend.prevent="onPointerUp" id='whiteboard' width='2000' height='2000'></canvas>
       </div>
     </div>
-    <div style="position: absolute;">
-      <div :style="{'background': selectedColor}" class="palette" @touchend.prevent></div>
+    <div style="position: absolute;" class="menu">
       <div class="ui" touch-action="none" @touchstart="zoom(1.5)" @pointerdown="zoom(1.5)" @touchend.prevent>拡大</div>
       <div class="ui" touch-action="none" @touchstart="zoom(1/1.5)" @pointerdown="zoom(1/1.5)" @touchend.prevent>縮小</div>
       <div class="ui" touch-action="none" @touchstart="move(100, 0)" @pointerdown="move(100, 0)" @touchend.prevent>←</div>
@@ -27,12 +26,22 @@
       <div class="ui" touch-action="none" @touchstart="move(-100, 0)" @pointerdown="move(-100, 0)" @touchend.prevent>→</div>
       <div class="ui" touch-action="none" @touchstart="reset()" @pointerdown="reset()" @touchend.prevent>原寸</div>
       <div class="ui" touch-action="none" @touchstart="clearCanvas()" @pointerdown="clearCanvas()" @touchend.prevent>キャンバス消去</div>
-      <div style="color: #333;">
-        {{count}} users
+      <div class="palettes">
+        <div :style="{'background': selectedColor}" class="palette" @touchend.prevent></div>
+        <div class="paletteWrapper">
+          <div v-for="p in palette" :style="{'background': p}" class="palette" @touchstart="selectColor(p)" @pointerdown="selectColor(p)"
+            @touchend.prevent></div>
+        </div>
+        <div class="penWidthWrapper">
+          <div v-for="penWidth in penWidthList" @click="setPenWidth(penWidth)" class="penWidth" :class="{'penWidth--selected': penWidth === selectedWidth}">
+            <svg width="56" height="56" style="position: absolute; top: 0; left: 0">
+              <circle fill="#fff" cx=28 cy=28 :r="penWidth / 2"></circle>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div>
-        <div v-for="p in palette" :style="{'background': p}" class="palette" @touchstart="selectColor(p)" @pointerdown="selectColor(p)"
-          @touchend.prevent></div>
+      <div class="users">
+        <span class="userCount">{{count}}</span> users
       </div>
     </div>
 
@@ -47,8 +56,8 @@
       <polyline :points="pointsString" stroke="black" stroke-width="2px" fill="none" />
       <polyline v-for="line in lines" :points="lineToString(line)" stroke="black" stroke-width="2px" fill="none" />
     </svg>
-    <button @click="clearChat" style="position: absolute; right: 0; bottom: 1.5rem;">Clear</button>
-    <button @click="sendChat" style="position: absolute; right: 0; bottom: 0;">Send</button>
+    <button class="chat__clear" @click="clearChat">Clear</button>
+    <button class="chat__send" @click="sendChat">Send</button>
   </div>
 
 
