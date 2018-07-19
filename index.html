@@ -15,7 +15,7 @@
     <div id='container'>
       <div id='draw-container' ontouchmove="return false;">
         <canvas ref="mainCanvas" touch-action="none" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
-          id='whiteboard' width='2000' height='2000'></canvas>
+          @touchend.prevent="onPointerUp" id='whiteboard' width='2000' height='2000'></canvas>
       </div>
     </div>
     <div style="position: absolute;">
@@ -44,7 +44,7 @@
     </svg>
 
     <svg width="300" height="150" touch-action="none" style="position: absolute; right: 0; bottom: 0; border: 1px solid #333; background: white;"
-      @pointerdown="chatDown" @pointermove="chatMove" @pointerup="chatUp" @touchend.prevent>
+      @pointerdown="chatDown" @pointermove="chatMove" @pointerup="chatUp" @touchend.prevent="chatUp">
       <polyline :points="pointsString" stroke="black" stroke-width="2px" fill="none" />
       <polyline v-for="line in lines" :points="lineToString(line)" stroke="black" stroke-width="2px" fill="none" />
     </svg>
