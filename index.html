@@ -47,6 +47,7 @@
       <polyline :points="pointsString" stroke="black" stroke-width="2px" fill="none" />
       <polyline v-for="line in lines" :points="lineToString(line)" stroke="black" stroke-width="2px" fill="none" />
     </svg>
+    <button @click="clearChat" style="position: absolute; right: 0; bottom: 1.5rem;">Clear</button>
     <button @click="sendChat" style="position: absolute; right: 0; bottom: 0;">Send</button>
   </div>
 

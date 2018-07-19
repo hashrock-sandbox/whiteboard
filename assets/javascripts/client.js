@@ -189,6 +189,9 @@ new Vue({
       });
       this.lines = [];
     },
+    clearChat() {
+      this.lines = [];
+    },
     appendMessage(chat) {
       this.messages.push(chat);
     }
