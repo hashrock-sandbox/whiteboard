@@ -2,6 +2,7 @@
 //@ts-ignore
 import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.esm.browser.js";
 import { palette, penWidthList } from "./config.js";
+import ChatPane from "./components/ChatPane.js";
 
 // client side socket
 const socket = io();
@@ -78,18 +79,15 @@ function translate() {
   }
 }
 
-let chatFlag = false;
-
 new Vue({
   el: "#app",
+  components: { ChatPane },
   data() {
     return {
       count: 0,
       palette: palette,
       selectedColor: color,
       selectedWidth: width,
-      points: [],
-      lines: [],
       messages: [],
       penWidthList: penWidthList
     };
@@ -116,38 +114,6 @@ new Vue({
       offset.y = 0;
       scale = 1;
       translate();
-    },
-    chatDown(e) {
-      if (!e.isPrimary) {
-        return;
-      }
-      const bound = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - bound.left;
-      const y = e.clientY - bound.top;
-      chatFlag = true;
-      this.points.push([x, y]);
-    },
-    chatMove(e) {
-      if (!e.isPrimary) {
-        return;
-      }
-      if (chatFlag) {
-        const bound = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - bound.left;
-        const y = e.clientY - bound.top;
-        this.points.push([x, y]);
-      }
-    },
-    chatUp(e) {
-      if (!e.isPrimary) {
-        return;
-      }
-      chatFlag = false;
-      this.lines.push(this.points);
-      this.points = [];
-    },
-    lineToString(line) {
-      return line.map(p => p.join(" ")).join(" ");
     },
 
     onPointerMove(e) {
@@ -191,31 +157,17 @@ new Vue({
       this.selectedWidth = w;
       width = w;
     },
-    sendChat() {
+    sendChat(payload) {
       socket.emit("chat", {
         handle,
-        text: this.lines.map(l => l.join(" ")).join("\n")
+        text: payload
       });
-      this.lines = [];
-    },
-    clearChat() {
-      this.lines = [];
     },
     appendMessage(chat) {
       this.messages.push(chat);
     }
   },
-  computed: {
-    pointsString() {
-      return this.points.map(p => p.join(" ")).join(" ");
-    },
-    messagesLast() {
-      return this.messages
-        .slice()
-        .reverse()
-        .slice(0, 10);
-    }
-  },
+  computed: {},
   mounted() {
     socket.on(
       "load",
