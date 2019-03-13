@@ -179,8 +179,22 @@
           fill="none"
         />
       </svg>
-      <button class="chat__clear" @click="clearChat">Clear</button>
-      <button class="chat__send" @click="sendChat">Send</button>
+      <button
+        class="chat__clear"
+        @pointerdown="clearChat"
+        @touchend.prevent
+        touch-action="none"
+      >
+        Clear
+      </button>
+      <button
+        class="chat__send"
+        @pointerdown="sendChat"
+        @touchend.prevent
+        touch-action="none"
+      >
+        Send
+      </button>
     </div>
 
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
