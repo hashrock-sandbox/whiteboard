@@ -1,17 +1,18 @@
 //@ts-check
+//@ts-ignore
+import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.esm.browser.js";
+import { palette, penWidthList } from "./config.js";
 
 // client side socket
-
 const socket = io();
 
 let id;
 let handle;
 
 // drawing
+let canvas;
 
-var canvas;
-
-var ctx;
+let ctx;
 let flag = false;
 let prevX = 0;
 let prevY = 0;
@@ -66,43 +67,19 @@ function draw(stroke) {
   ctx.closePath();
 }
 
-var scale = 1;
-var offset = { x: 0, y: 0 };
+let scale = 1;
+let offset = { x: 0, y: 0 };
 
 function translate() {
-  var s = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
+  let s = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
   const el = document.querySelector("#whiteboard");
   if (el instanceof HTMLCanvasElement) {
     el.style.transform = s;
   }
 }
 
-const palette = [
-  "#000000",
-  "#FFFFFF",
-  "#5f5750",
-  "#82759a",
-  "#c0c1c5",
-  "#fff0e7",
-  "#7d2953",
-  "#ff074e",
-  "#ff76a6",
-  "#a95238",
-  "#ffa108",
-  "#feeb2c",
-  "#ffcaa8",
-  "#008551",
-  "#00e339",
-  "#222e53",
-  "#2cabfe"
-];
+let chatFlag = false;
 
-const penWidthList = [1, 2, 3, 5, 10, 20, 30, 50];
-
-var chatFlag = false;
-var chatPp = { x: 0, y: 0 };
-
-//@ts-ignore
 new Vue({
   el: "#app",
   data() {

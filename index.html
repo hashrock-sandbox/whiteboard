@@ -1,73 +1,190 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <title>Whiteboard</title>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    <link type="text/css" rel="stylesheet" href="/stylesheets/draw.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+  </head>
 
-<head>
-
-  <title>Whiteboard</title>
-  <link type='text/css' rel='stylesheet' href='/stylesheets/main.css' />
-  <link type='text/css' rel='stylesheet' href='/stylesheets/draw.css' />
-  <meta name="viewport" content="width=device-width, user-scalable=no" />
-</head>
-
-<body>
-  <div id="app">
-    <div id='container'>
-      <div id='draw-container' ontouchmove="return false;">
-        <canvas ref="mainCanvas" touch-action="none" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
-          @touchend.prevent="onPointerUp" id='whiteboard' width='2000' height='2000'></canvas>
-      </div>
-    </div>
-    <div style="position: absolute;" class="menu">
-      <div class="ui" touch-action="none" @touchstart="zoom(1.5)" @pointerdown="zoom(1.5)" @touchend.prevent>拡大</div>
-      <div class="ui" touch-action="none" @touchstart="zoom(1/1.5)" @pointerdown="zoom(1/1.5)" @touchend.prevent>縮小</div>
-      <div class="ui" touch-action="none" @touchstart="move(100, 0)" @pointerdown="move(100, 0)" @touchend.prevent>←</div>
-      <div class="ui" touch-action="none" @touchstart="move(0, 100)" @pointerdown="move(0, 100)" @touchend.prevent>↑</div>
-      <div class="ui" touch-action="none" @touchstart="move(0, -100)" @pointerdown="move(0, -100)" @touchend.prevent>↓</div>
-      <div class="ui" touch-action="none" @touchstart="move(-100, 0)" @pointerdown="move(-100, 0)" @touchend.prevent>→</div>
-      <div class="ui" touch-action="none" @touchstart="reset()" @pointerdown="reset()" @touchend.prevent>原寸</div>
-      <div class="ui" touch-action="none" @touchstart="clearCanvas()" @pointerdown="clearCanvas()" @touchend.prevent>キャンバス消去</div>
-      <div class="palettes">
-        <div :style="{'background': selectedColor}" class="palette" @touchend.prevent></div>
-        <div class="paletteWrapper">
-          <div v-for="p in palette" :style="{'background': p}" class="palette" @touchstart="selectColor(p)" @pointerdown="selectColor(p)"
-            @touchend.prevent></div>
+  <body>
+    <div id="app">
+      <div id="container">
+        <div id="draw-container" ontouchmove="return false;">
+          <canvas
+            ref="mainCanvas"
+            touch-action="none"
+            @pointerdown="onPointerDown"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            @touchend.prevent="onPointerUp"
+            id="whiteboard"
+            width="2000"
+            height="2000"
+          ></canvas>
         </div>
-        <div class="penWidthWrapper">
-          <div v-for="penWidth in penWidthList" @click="setPenWidth(penWidth)" class="penWidth" :class="{'penWidth--selected': penWidth === selectedWidth}">
-            <svg width="56" height="56" style="position: absolute; top: 0; left: 0">
-              <circle fill="#fff" cx=28 cy=28 :r="penWidth / 2"></circle>
-            </svg>
+      </div>
+      <div style="position: absolute;" class="menu">
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="zoom(1.5)"
+          @pointerdown="zoom(1.5)"
+          @touchend.prevent
+        >
+          拡大
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="zoom(1/1.5)"
+          @pointerdown="zoom(1/1.5)"
+          @touchend.prevent
+        >
+          縮小
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="move(100, 0)"
+          @pointerdown="move(100, 0)"
+          @touchend.prevent
+        >
+          ←
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="move(0, 100)"
+          @pointerdown="move(0, 100)"
+          @touchend.prevent
+        >
+          ↑
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="move(0, -100)"
+          @pointerdown="move(0, -100)"
+          @touchend.prevent
+        >
+          ↓
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="move(-100, 0)"
+          @pointerdown="move(-100, 0)"
+          @touchend.prevent
+        >
+          →
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="reset()"
+          @pointerdown="reset()"
+          @touchend.prevent
+        >
+          原寸
+        </div>
+        <div
+          class="ui"
+          touch-action="none"
+          @touchstart="clearCanvas()"
+          @pointerdown="clearCanvas()"
+          @touchend.prevent
+        >
+          キャンバス消去
+        </div>
+        <div class="palettes">
+          <div
+            :style="{'background': selectedColor}"
+            class="palette"
+            @touchend.prevent
+          ></div>
+          <div class="paletteWrapper">
+            <div
+              v-for="p in palette"
+              :style="{'background': p}"
+              class="palette"
+              @touchstart="selectColor(p)"
+              @pointerdown="selectColor(p)"
+              @touchend.prevent
+            ></div>
+          </div>
+          <div class="penWidthWrapper">
+            <div
+              v-for="penWidth in penWidthList"
+              @click="setPenWidth(penWidth)"
+              class="penWidth"
+              :class="{'penWidth--selected': penWidth === selectedWidth}"
+            >
+              <svg
+                width="56"
+                height="56"
+                style="position: absolute; top: 0; left: 0"
+              >
+                <circle fill="#fff" cx="28" cy="28" :r="penWidth / 2"></circle>
+              </svg>
+            </div>
           </div>
         </div>
+        <div class="users">
+          <span class="userCount">{{ count }}</span> users
+        </div>
       </div>
-      <div class="users">
-        <span class="userCount">{{count}}</span> users
-      </div>
+
+      <svg
+        v-for="(message, idx) in messagesLast"
+        :key="message._id"
+        viewBox="0 0 300 150"
+        width="150"
+        height="75"
+        touch-action="none"
+        style="transition: all ease 1s;position: absolute; right: 0; background: rgba(255,255,255,0.8); border: 1px solid #CCC; border-radius: 4px;"
+        :style="{'bottom': idx * 80 + 150 + 'px'}"
+        @touchend.prevent
+      >
+        <polyline
+          v-for="line in message.text.split('\n')"
+          :points="line"
+          stroke="black"
+          stroke-width="2px"
+          fill="none"
+        />
+      </svg>
+
+      <svg
+        width="300"
+        height="150"
+        touch-action="none"
+        style="position: absolute; right: 0; bottom: 0; border: 1px solid #333; background: white;"
+        @pointerdown="chatDown"
+        @pointermove="chatMove"
+        @pointerup="chatUp"
+        @touchend.prevent="chatUp"
+      >
+        <polyline
+          :points="pointsString"
+          stroke="black"
+          stroke-width="2px"
+          fill="none"
+        />
+        <polyline
+          v-for="line in lines"
+          :points="lineToString(line)"
+          stroke="black"
+          stroke-width="2px"
+          fill="none"
+        />
+      </svg>
+      <button class="chat__clear" @click="clearChat">Clear</button>
+      <button class="chat__send" @click="sendChat">Send</button>
     </div>
 
-    <svg v-for="(message, idx) in messagesLast" :key="message._id" viewBox="0 0 300 150" width="150" height="75" touch-action="none"
-      style="transition: all ease 1s;position: absolute; right: 0; background: rgba(255,255,255,0.8); border: 1px solid #CCC; border-radius: 4px;"
-      :style="{'bottom': idx * 80 + 150 + 'px'}" @touchend.prevent>
-      <polyline v-for="line in message.text.split('\n')" :points="line" stroke="black" stroke-width="2px" fill="none" />
-    </svg>
-
-    <svg width="300" height="150" touch-action="none" style="position: absolute; right: 0; bottom: 0; border: 1px solid #333; background: white;"
-      @pointerdown="chatDown" @pointermove="chatMove" @pointerup="chatUp" @touchend.prevent="chatUp">
-      <polyline :points="pointsString" stroke="black" stroke-width="2px" fill="none" />
-      <polyline v-for="line in lines" :points="lineToString(line)" stroke="black" stroke-width="2px" fill="none" />
-    </svg>
-    <button class="chat__clear" @click="clearChat">Clear</button>
-    <button class="chat__send" @click="sendChat">Send</button>
-  </div>
-
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js'></script>
-  <script src='/javascripts/client.js'></script>
-
-</body>
-
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script type="module" src="/javascripts/client.js"></script>
+  </body>
 </html>
