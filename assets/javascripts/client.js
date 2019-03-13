@@ -1,3 +1,5 @@
+//@ts-check
+
 // client side socket
 
 const socket = io();
@@ -68,8 +70,11 @@ var scale = 1;
 var offset = { x: 0, y: 0 };
 
 function translate() {
-  var s = `transform: translate(${offset.x}px, ${offset.y}px) scale(${scale});`;
-  document.querySelector("#whiteboard").style = s;
+  var s = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
+  const el = document.querySelector("#whiteboard");
+  if (el instanceof HTMLCanvasElement) {
+    el.style.transform = s;
+  }
 }
 
 const palette = [
@@ -97,6 +102,7 @@ const penWidthList = [1, 2, 3, 5, 10, 20, 30, 50];
 var chatFlag = false;
 var chatPp = { x: 0, y: 0 };
 
+//@ts-ignore
 new Vue({
   el: "#app",
   data() {
