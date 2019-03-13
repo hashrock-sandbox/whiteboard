@@ -33,9 +33,11 @@ textarea:focus, input:focus {
 .menu {
   margin-left: 0.5rem;
   margin-top: 0.5rem;
+  pointer-events: none;
 }
 
 .ui {
+  pointer-events: auto;
   font-size: 0.875rem;
   background: rgba(0, 0, 0, 0.75);
   color: white;
@@ -61,6 +63,7 @@ textarea:focus, input:focus {
 }
 
 .palette {
+  pointer-events: auto;
   width: 24px;
   height: 24px;
   display: inline-block;
@@ -105,11 +108,12 @@ rect {
 }
 
 .penWidth {
-  width: 62px;
-  height: 62px;
+  pointer-events: auto;
+  width: 40px;
+  height: 40px;
   margin-right: 0.5rem;
   text-align: center;
-  line-height: 62px;
+  line-height: 40px;
   display: inline-block;
   box-sizing: border-box;
   font-size: 0.7rem;

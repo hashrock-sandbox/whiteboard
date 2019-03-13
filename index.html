@@ -24,11 +24,10 @@
           ></canvas>
         </div>
       </div>
-      <div style="position: absolute;" class="menu">
+      <div style="position: absolute;" touch-action="none" class="menu">
         <div
           class="ui"
           touch-action="none"
-          @touchstart="zoom(1.5)"
           @pointerdown="zoom(1.5)"
           @touchend.prevent
         >
@@ -37,7 +36,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="zoom(1/1.5)"
           @pointerdown="zoom(1/1.5)"
           @touchend.prevent
         >
@@ -46,7 +44,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="move(100, 0)"
           @pointerdown="move(100, 0)"
           @touchend.prevent
         >
@@ -55,7 +52,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="move(0, 100)"
           @pointerdown="move(0, 100)"
           @touchend.prevent
         >
@@ -64,7 +60,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="move(0, -100)"
           @pointerdown="move(0, -100)"
           @touchend.prevent
         >
@@ -73,7 +68,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="move(-100, 0)"
           @pointerdown="move(-100, 0)"
           @touchend.prevent
         >
@@ -82,7 +76,6 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="reset()"
           @pointerdown="reset()"
           @touchend.prevent
         >
@@ -91,13 +84,12 @@
         <div
           class="ui"
           touch-action="none"
-          @touchstart="clearCanvas()"
           @pointerdown="clearCanvas()"
           @touchend.prevent
         >
           キャンバス消去
         </div>
-        <div class="palettes">
+        <div class="palettes" touch-action="none">
           <div
             :style="{'background': selectedColor}"
             class="palette"
@@ -108,24 +100,37 @@
               v-for="p in palette"
               :style="{'background': p}"
               class="palette"
-              @touchstart="selectColor(p)"
+              touch-action="none"
               @pointerdown="selectColor(p)"
               @touchend.prevent
             ></div>
           </div>
-          <div class="penWidthWrapper">
+          <div class="penWidthWrapper" touch-action="none">
             <div
               v-for="penWidth in penWidthList"
-              @click="setPenWidth(penWidth)"
+              touch-action="none"
+              @pointerdown="setPenWidth(penWidth)"
+              @touchend.prevent
               class="penWidth"
               :class="{'penWidth--selected': penWidth === selectedWidth}"
             >
               <svg
-                width="56"
-                height="56"
+                width="34"
+                height="34"
                 style="position: absolute; top: 0; left: 0"
               >
-                <circle fill="#fff" cx="28" cy="28" :r="penWidth / 2"></circle>
+                <circle fill="#fff" cx="17" cy="17" :r="penWidth / 2"></circle>
+                <text
+                  x="17"
+                  y="17"
+                  text-anchor="middle"
+                  dominant-baseline="central"
+                  v-if="penWidth > 20"
+                  font-weight="700"
+                  fill="#666"
+                >
+                  {{ penWidth }}
+                </text>
               </svg>
             </div>
           </div>
