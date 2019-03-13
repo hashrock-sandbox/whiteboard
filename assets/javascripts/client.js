@@ -135,6 +135,9 @@ new Vue({
       translate();
     },
     chatDown(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       const bound = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - bound.left;
       const y = e.clientY - bound.top;
@@ -142,6 +145,9 @@ new Vue({
       this.points.push([x, y]);
     },
     chatMove(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       if (chatFlag) {
         const bound = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - bound.left;
@@ -150,6 +156,9 @@ new Vue({
       }
     },
     chatUp(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       chatFlag = false;
       this.lines.push(this.points);
       this.points = [];
@@ -159,6 +168,9 @@ new Vue({
     },
 
     onPointerMove(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       if (flag) {
         updateXY(e);
         draw({ prevX, prevY, currX, currY, width, color });
@@ -166,6 +178,9 @@ new Vue({
       }
     },
     onPointerDown(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       flag = true;
       canvas.setPointerCapture(e.pointerId);
       updateXY(e);
@@ -173,6 +188,9 @@ new Vue({
       emitMouse("down", e);
     },
     onPointerUp(e) {
+      if (!e.isPrimary) {
+        return;
+      }
       flag = false;
     },
 
