@@ -19,6 +19,7 @@ export default {
     </svg>
 
     <svg
+      ref="chatcanv"
       width="300"
       height="150"
       touch-action="none"
@@ -90,6 +91,9 @@ export default {
       if (!e.isPrimary) {
         return;
       }
+      const svg = this.$refs.chatcanv;
+      svg.setPointerCapture(e.pointerId);
+
       const bound = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - bound.left;
       const y = e.clientY - bound.top;
