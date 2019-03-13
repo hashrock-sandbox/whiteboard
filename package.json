@@ -1,5 +1,5 @@
 {
-  "name": "whiteboard",
+  "name": "whiteboard-mod",
   "version": "1.1.0",
   "description": "socket.io whiteboard app",
   "main": "server.js",
