@@ -5,6 +5,7 @@ import { palette, penWidthList } from "./config.js";
 import ChatPane from "./components/ChatPane.js";
 
 // client side socket
+//@ts-ignore
 const socket = io();
 
 let id;
@@ -85,6 +86,9 @@ new Vue({
   data() {
     return {
       count: 0,
+      discord: {
+        members: []
+      },
       palette: palette,
       selectedColor: color,
       selectedWidth: width,
@@ -199,5 +203,11 @@ new Vue({
     });
 
     this.initCanvas();
+
+    fetch("https://discordapp.com/api/guilds/556500807508557825/widget.json")
+      .then(i => i.json())
+      .then(body => {
+        this.discord = body;
+      });
   }
 });

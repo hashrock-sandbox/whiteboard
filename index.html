@@ -136,7 +136,25 @@
           </div>
         </div>
         <div class="users">
-          <span class="userCount">{{ count }}</span> users
+          <div>
+            <span class="userCount">{{ count }}</span> users
+          </div>
+          <div class="discord">
+            <span v-for="member in discord.members" :key="member.id">
+              <img
+                :src="member.avatar_url"
+                height="24"
+                :alt="member.username"
+              />
+            </span>
+            <br />
+            on
+            <a
+              style="pointer-events: auto;"
+              href="https://discordapp.com/invite/NjMrSy"
+              >Discord</a
+            >
+          </div>
         </div>
       </div>
 
