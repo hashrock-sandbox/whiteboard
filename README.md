@@ -2,6 +2,9 @@
 
 This is a fork of https://github.com/romebop/whiteboard
 
+![スクリーンショット 2019-03-15 2 03 23](https://user-images.githubusercontent.com/3132889/54376542-a6f42d80-46c6-11e9-8372-9f496bdbb076.png)
+
+
 # Additional features
 
 - Image chat (like a pictchat)
